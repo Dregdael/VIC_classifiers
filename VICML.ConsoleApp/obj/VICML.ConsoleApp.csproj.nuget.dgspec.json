@@ -1,20 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Actividades\\Maestría\\Segundo semestre\\Machine learning\\Assignment_2\\VIC-master\\VIC-master\\VICML.ConsoleApp\\VICML.ConsoleApp.csproj": {}
+    "C:\\Users\\crash\\Desktop\\MCC-i\\2doSemestre\\Tecnicas Computacionales de Aprendizaje Automatico\\Tarea 2\\Github\\VIC_classifiers\\VICML.ConsoleApp\\VICML.ConsoleApp.csproj": {}
   },
   "projects": {
-    "D:\\Actividades\\Maestría\\Segundo semestre\\Machine learning\\Assignment_2\\VIC-master\\VIC-master\\VICML.ConsoleApp\\VICML.ConsoleApp.csproj": {
+    "C:\\Users\\crash\\Desktop\\MCC-i\\2doSemestre\\Tecnicas Computacionales de Aprendizaje Automatico\\Tarea 2\\Github\\VIC_classifiers\\VICML.ConsoleApp\\VICML.ConsoleApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Actividades\\Maestría\\Segundo semestre\\Machine learning\\Assignment_2\\VIC-master\\VIC-master\\VICML.ConsoleApp\\VICML.ConsoleApp.csproj",
+        "projectUniqueName": "C:\\Users\\crash\\Desktop\\MCC-i\\2doSemestre\\Tecnicas Computacionales de Aprendizaje Automatico\\Tarea 2\\Github\\VIC_classifiers\\VICML.ConsoleApp\\VICML.ConsoleApp.csproj",
         "projectName": "VICML.ConsoleApp",
-        "projectPath": "D:\\Actividades\\Maestría\\Segundo semestre\\Machine learning\\Assignment_2\\VIC-master\\VIC-master\\VICML.ConsoleApp\\VICML.ConsoleApp.csproj",
-        "packagesPath": "C:\\Users\\Edwin\\.nuget\\packages\\",
-        "outputPath": "D:\\Actividades\\Maestría\\Segundo semestre\\Machine learning\\Assignment_2\\VIC-master\\VIC-master\\VICML.ConsoleApp\\obj\\",
+        "projectPath": "C:\\Users\\crash\\Desktop\\MCC-i\\2doSemestre\\Tecnicas Computacionales de Aprendizaje Automatico\\Tarea 2\\Github\\VIC_classifiers\\VICML.ConsoleApp\\VICML.ConsoleApp.csproj",
+        "packagesPath": "C:\\Users\\crash\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\crash\\Desktop\\MCC-i\\2doSemestre\\Tecnicas Computacionales de Aprendizaje Automatico\\Tarea 2\\Github\\VIC_classifiers\\VICML.ConsoleApp\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Edwin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\crash\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -27,8 +30,8 @@
         "frameworks": {
           "netcoreapp3.1": {
             "projectReferences": {
-              "D:\\Actividades\\Maestría\\Segundo semestre\\Machine learning\\Assignment_2\\VIC-master\\VIC-master\\VICML.Model\\VICML.Model.csproj": {
-                "projectPath": "D:\\Actividades\\Maestría\\Segundo semestre\\Machine learning\\Assignment_2\\VIC-master\\VIC-master\\VICML.Model\\VICML.Model.csproj"
+              "C:\\Users\\crash\\Desktop\\MCC-i\\2doSemestre\\Tecnicas Computacionales de Aprendizaje Automatico\\Tarea 2\\Github\\VIC_classifiers\\VICML.Model\\VICML.Model.csproj": {
+                "projectPath": "C:\\Users\\crash\\Desktop\\MCC-i\\2doSemestre\\Tecnicas Computacionales de Aprendizaje Automatico\\Tarea 2\\Github\\VIC_classifiers\\VICML.Model\\VICML.Model.csproj"
               }
             }
           }
@@ -70,17 +73,20 @@
         }
       }
     },
-    "D:\\Actividades\\Maestría\\Segundo semestre\\Machine learning\\Assignment_2\\VIC-master\\VIC-master\\VICML.Model\\VICML.Model.csproj": {
+    "C:\\Users\\crash\\Desktop\\MCC-i\\2doSemestre\\Tecnicas Computacionales de Aprendizaje Automatico\\Tarea 2\\Github\\VIC_classifiers\\VICML.Model\\VICML.Model.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Actividades\\Maestría\\Segundo semestre\\Machine learning\\Assignment_2\\VIC-master\\VIC-master\\VICML.Model\\VICML.Model.csproj",
+        "projectUniqueName": "C:\\Users\\crash\\Desktop\\MCC-i\\2doSemestre\\Tecnicas Computacionales de Aprendizaje Automatico\\Tarea 2\\Github\\VIC_classifiers\\VICML.Model\\VICML.Model.csproj",
         "projectName": "VICML.Model",
-        "projectPath": "D:\\Actividades\\Maestría\\Segundo semestre\\Machine learning\\Assignment_2\\VIC-master\\VIC-master\\VICML.Model\\VICML.Model.csproj",
-        "packagesPath": "C:\\Users\\Edwin\\.nuget\\packages\\",
-        "outputPath": "D:\\Actividades\\Maestría\\Segundo semestre\\Machine learning\\Assignment_2\\VIC-master\\VIC-master\\VICML.Model\\obj\\",
+        "projectPath": "C:\\Users\\crash\\Desktop\\MCC-i\\2doSemestre\\Tecnicas Computacionales de Aprendizaje Automatico\\Tarea 2\\Github\\VIC_classifiers\\VICML.Model\\VICML.Model.csproj",
+        "packagesPath": "C:\\Users\\crash\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\crash\\Desktop\\MCC-i\\2doSemestre\\Tecnicas Computacionales de Aprendizaje Automatico\\Tarea 2\\Github\\VIC_classifiers\\VICML.Model\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Edwin\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\crash\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

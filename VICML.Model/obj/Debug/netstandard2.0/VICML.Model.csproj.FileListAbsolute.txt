@@ -8,3 +8,13 @@ D:\Actividades\Maestría\Segundo semestre\Machine learning\Assignment_2\VIC-mast
 D:\Actividades\Maestría\Segundo semestre\Machine learning\Assignment_2\VIC-master\VIC-master\VICML.Model\obj\Debug\netstandard2.0\VICML.Model.csproj.CoreCompileInputs.cache
 D:\Actividades\Maestría\Segundo semestre\Machine learning\Assignment_2\VIC-master\VIC-master\VICML.Model\obj\Debug\netstandard2.0\VICML.Model.dll
 D:\Actividades\Maestría\Segundo semestre\Machine learning\Assignment_2\VIC-master\VIC-master\VICML.Model\obj\Debug\netstandard2.0\VICML.Model.pdb
+C:\Users\crash\Desktop\MCC-i\2doSemestre\Tecnicas Computacionales de Aprendizaje Automatico\Tarea 2\Github\VIC_classifiers\VICML.Model\bin\Debug\netstandard2.0\MLModel.zip
+C:\Users\crash\Desktop\MCC-i\2doSemestre\Tecnicas Computacionales de Aprendizaje Automatico\Tarea 2\Github\VIC_classifiers\VICML.Model\bin\Debug\netstandard2.0\VICML.Model.deps.json
+C:\Users\crash\Desktop\MCC-i\2doSemestre\Tecnicas Computacionales de Aprendizaje Automatico\Tarea 2\Github\VIC_classifiers\VICML.Model\bin\Debug\netstandard2.0\VICML.Model.dll
+C:\Users\crash\Desktop\MCC-i\2doSemestre\Tecnicas Computacionales de Aprendizaje Automatico\Tarea 2\Github\VIC_classifiers\VICML.Model\bin\Debug\netstandard2.0\VICML.Model.pdb
+C:\Users\crash\Desktop\MCC-i\2doSemestre\Tecnicas Computacionales de Aprendizaje Automatico\Tarea 2\Github\VIC_classifiers\VICML.Model\obj\Debug\netstandard2.0\VICML.Model.csprojAssemblyReference.cache
+C:\Users\crash\Desktop\MCC-i\2doSemestre\Tecnicas Computacionales de Aprendizaje Automatico\Tarea 2\Github\VIC_classifiers\VICML.Model\obj\Debug\netstandard2.0\VICML.Model.AssemblyInfoInputs.cache
+C:\Users\crash\Desktop\MCC-i\2doSemestre\Tecnicas Computacionales de Aprendizaje Automatico\Tarea 2\Github\VIC_classifiers\VICML.Model\obj\Debug\netstandard2.0\VICML.Model.AssemblyInfo.cs
+C:\Users\crash\Desktop\MCC-i\2doSemestre\Tecnicas Computacionales de Aprendizaje Automatico\Tarea 2\Github\VIC_classifiers\VICML.Model\obj\Debug\netstandard2.0\VICML.Model.csproj.CoreCompileInputs.cache
+C:\Users\crash\Desktop\MCC-i\2doSemestre\Tecnicas Computacionales de Aprendizaje Automatico\Tarea 2\Github\VIC_classifiers\VICML.Model\obj\Debug\netstandard2.0\VICML.Model.dll
+C:\Users\crash\Desktop\MCC-i\2doSemestre\Tecnicas Computacionales de Aprendizaje Automatico\Tarea 2\Github\VIC_classifiers\VICML.Model\obj\Debug\netstandard2.0\VICML.Model.pdb
