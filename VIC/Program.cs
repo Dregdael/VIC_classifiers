@@ -26,18 +26,55 @@ namespace VIC
             [ColumnName("Score")]
             public float Price { get; set; }
         }
+
+
+        public class BasicEvaluation
+        {
+            public int TP = 0;
+            public int TN = 0;
+            public int FN = 0;
+            public int FP = 0;
+        }
+
+        public static double ComputeTwoClassAUC(BasicEvaluation basicEvaluation)
+        {
+            double positives = basicEvaluation.TP + basicEvaluation.FN;
+            double negatives = basicEvaluation.TN + basicEvaluation.FP;
+            var tprate = positives > 0.0 ? basicEvaluation.TP / positives : 1.0;
+            var fprate = negatives > 0.0 ? basicEvaluation.TN / negatives : 1.0;
+            return (tprate + fprate) / 2.0;
+        }
+
+        public static double ComputeMultiClassAUC(int[,] confusionMatrix)
+        {
+            var eval = new BasicEvaluation();
+            for (int i = 0; i < confusionMatrix.GetLength(0); i++)
+            {
+                eval.TP += confusionMatrix[i, i];
+                for (int j = 0; j < confusionMatrix.GetLength(0); j++)
+                    if (i != j)
+                    {
+                        eval.FN += confusionMatrix[i, j];
+                        eval.FP += confusionMatrix[j, i];
+
+                        eval.TN += confusionMatrix[j, j];
+                    }
+
+            }
+            return ComputeTwoClassAUC(eval);
+        }
         static void Main(string[] args)
         {
             MLContext mlContext = new MLContext();
 
             // 1. Import or create training data
 
-           // IDataView trainingData = Util.Load_data();
-            string csv_path = @"C:\Users\crash\Desktop\MCC-i\2doSemestre\Tecnicas Computacionales de Aprendizaje Automatico\Tarea 2\Github\VIC_classifiers\VIC\data.csv";
+            // IDataView trainingData = Util.Load_data();
+            string csv_path = @"D:\Actividades\Maestría\Segundo semestre\Machine learning\Assignment_2\VIC-master\VIC-master\VIC\data.csv";
             IDataView trainingData = mlContext.Data.LoadFromTextFile<ModelInput>(csv_path, separatorChar: ',', hasHeader: true);
-    
+
             // 2. Specify data preparation and model training pipeline
-            var pipeline = mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "fingerprintEncoded", inputColumnName: "fingerprint").Append(mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "typeEncoded", inputColumnName: "type")).Append(mlContext.Transforms.Concatenate("Features", new[] { 
+            var pipeline = mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "fingerprintEncoded", inputColumnName: "fingerprint").Append(mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "typeEncoded", inputColumnName: "type")).Append(mlContext.Transforms.Concatenate("Features", new[] {
                 "nn15",
                 "nn30"    ,
                 "nn45"    ,
@@ -305,16 +342,17 @@ namespace VIC
                 })
                 ).Append(mlContext.BinaryClassification.Trainers.FastForest(labelColumnName: "Label"));
 
+            /*
             var model = pipeline.Fit(trainingData);
 
-            var scores = mlContext.BinaryClassification.CrossValidate(trainingData, pipeline, numberOfFolds: 10);
-            var mean = scores.Average(x => x.Metrics.AreaUnderRocCurve);
-            Console.WriteLine("El valor de AUC en la cosa esta con cross-val es: ");
-            Console.WriteLine(mean);
+             var scores = mlContext.BinaryClassification.CrossValidate(trainingData, pipeline, numberOfFolds: 10);
+             var mean = scores.Average(x => x.Metrics.AreaUnderRocCurve);
+             Console.WriteLine("El valor de AUC en la cosa esta con cross-val es: ");
+             Console.WriteLine(mean);
+            */
 
-          
 
-            string csv_path2 = @"C:\Users\crash\Desktop\MCC-i\2doSemestre\Tecnicas Computacionales de Aprendizaje Automatico\Tarea 2\Github\VIC_classifiers\VIC\data2.csv";
+            string csv_path2 = @"D:\Actividades\Maestría\Segundo semestre\Machine learning\Assignment_2\VIC-master\VIC-master\VIC\data2.csv";
             IDataView trainingData2 = mlContext.Data.LoadFromTextFile<ModelInput2>(csv_path2, separatorChar: ',', hasHeader: true);
 
             // 2. Specify data preparation and model training pipeline
@@ -585,7 +623,13 @@ namespace VIC
                 "alphaf-betaf"
                 })
                 ).Append(mlContext.Transforms.Conversion.MapValueToKey("Label")).Append(mlContext.MulticlassClassification.Trainers
-                .OneVersusAll(mlContext.BinaryClassification.Trainers.FastForest()));
+                .NaiveBayes());
+                //.OneVersusAll(mlContext.BinaryClassification.Trainers.FastTree()));
+                //.OneVersusAll(mlContext.BinaryClassification.Trainers.FastForest()));
+                //.OneVersusAll(mlContext.BinaryClassification.Trainers.LbfgsLogisticRegression())); 
+                //.OneVersusAll(mlContext.BinaryClassification.Trainers.AveragedPerceptron()));
+                //.OneVersusAll(mlContext.BinaryClassification.Trainers.LinearSvm()));
+                //.LbfgsMaximumEntropy());
 
 
             //var model2 = pipeline2.Fit(trainingData2);
@@ -596,8 +640,26 @@ namespace VIC
             Console.WriteLine("El valor de AUC en la cosa esta con cross-val es: ");
             Console.WriteLine(mean2);
             Console.WriteLine(predictions2.Metrics.ConfusionMatrix.GetFormattedConfusionTable());
+            int[,] matriz = new int[3, 3];
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0;j < 3; j++)
+                {
+                    matriz[i, j] = (int)predictions2.Metrics.ConfusionMatrix.GetCountForClassPair(i, j);
+                }
+            }
+            Console.WriteLine(ComputeMultiClassAUC(matriz));
+            /*
+            for (int i = 0; i < 3; i++)
+            {
+                for (int j = 0; j < 3; j++)
+                {
+                    Console.Write(matriz[i, j]+" ");
+                }
+                Console.WriteLine();
+            }
+            */
 
-            Console.WriteLine(predictions2.Metrics.ConfusionMatrix.GetCountForClassPair(0,0));
 
 
             // 3. Train model
