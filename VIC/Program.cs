@@ -202,7 +202,7 @@ namespace VIC
 
         static void Main(string[] args)
         {
-            MLContext mlContext = new MLContext();
+            MLContext mlContext = new MLContext(seed: 0);
 
             // 1. Import or create training data
 
@@ -486,11 +486,15 @@ namespace VIC
                 };
 
             int selector = 0;
+            double[] aucArray = new double[7];
             for (int i = 0; i < 7; i++)
             {
                 Console.WriteLine("El valor de AUC con cross-val de 10 folds usando el modelo " + i + " es: ");
-                Console.WriteLine(CalculateModelAUC(mlContext, i, trainingData2, attributes)); //result.
+                aucArray[i] = CalculateModelAUC(mlContext, i, trainingData2, attributes);
+                Console.WriteLine(aucArray[i]); //result.
             }
+            Console.WriteLine("El VIC es: ");
+            Console.WriteLine(aucArray.Max());
         }
 
     }
