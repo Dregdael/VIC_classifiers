@@ -63,6 +63,143 @@ namespace VIC
             }
             return ComputeTwoClassAUC(eval);
         }
+
+        public static double CalculateModelAUC(MLContext mlContext, int selector, IDataView trainingData2, string[] attributes)
+        {
+            // 3. Model selection and confusion matrix creation, the matrix is not filled at this time.
+            int[,] matriz = new int[3, 3];
+
+            double aucValues = 0;
+
+            // 4. Pipeline creation, cross validation evaluation and AUC computation through the confusion matrix 
+
+            switch (selector)
+            {
+                case 0:
+                    var pipeline0 = mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "typeEncoded", inputColumnName: "type").Append(mlContext.Transforms.Concatenate("Features", attributes)
+                     ).Append(mlContext.Transforms.Conversion.MapValueToKey("Label")).Append(mlContext.MulticlassClassification.Trainers.NaiveBayes()); //pipeline for specific model
+                    var scores0 = mlContext.MulticlassClassification.CrossValidate(trainingData2, pipeline0, numberOfFolds: 10); //cross validation evaluation.
+                    aucValues = 0;
+                    for (int k = 0; k < 10; k++) //confusion matrix generation
+                    {
+                        for (int i = 0; i < 3; i++)
+                        {
+                            for (int j = 0; j < 3; j++)
+                            {
+                                matriz[i, j] = (int)scores0[k].Metrics.ConfusionMatrix.GetCountForClassPair(i, j);
+                            }
+                        }
+                        aucValues += ComputeMultiClassAUC(matriz); //computes multi class auc and adds it to be calculated as an average. 
+                    }
+                    break;
+                case 1:
+                    var pipeline1 = mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "typeEncoded", inputColumnName: "type").Append(mlContext.Transforms.Concatenate("Features", attributes)
+                     ).Append(mlContext.Transforms.Conversion.MapValueToKey("Label")).Append(mlContext.MulticlassClassification.Trainers.OneVersusAll(mlContext.BinaryClassification.Trainers.FastTree()));
+                    var scores1 = mlContext.MulticlassClassification.CrossValidate(trainingData2, pipeline1, numberOfFolds: 10);
+                    aucValues = 0;
+                    for (int k = 0; k < 10; k++)
+                    {
+                        for (int i = 0; i < 3; i++)
+                        {
+                            for (int j = 0; j < 3; j++)
+                            {
+                                matriz[i, j] = (int)scores1[k].Metrics.ConfusionMatrix.GetCountForClassPair(i, j);
+                            }
+                        }
+                        aucValues += ComputeMultiClassAUC(matriz);
+                    }
+                    break;
+                case 2:
+                    var pipeline2 = mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "typeEncoded", inputColumnName: "type").Append(mlContext.Transforms.Concatenate("Features", attributes)
+                     ).Append(mlContext.Transforms.Conversion.MapValueToKey("Label")).Append(mlContext.MulticlassClassification.Trainers.OneVersusAll(mlContext.BinaryClassification.Trainers.FastForest()));
+                    var scores2 = mlContext.MulticlassClassification.CrossValidate(trainingData2, pipeline2, numberOfFolds: 10);
+                    aucValues = 0;
+                    for (int k = 0; k < 10; k++)
+                    {
+                        for (int i = 0; i < 3; i++)
+                        {
+                            for (int j = 0; j < 3; j++)
+                            {
+                                matriz[i, j] = (int)scores2[k].Metrics.ConfusionMatrix.GetCountForClassPair(i, j);
+                            }
+                        }
+                        aucValues += ComputeMultiClassAUC(matriz);
+                    }
+                    break;
+                case 3:
+                    var pipeline3 = mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "typeEncoded", inputColumnName: "type").Append(mlContext.Transforms.Concatenate("Features", attributes)
+                     ).Append(mlContext.Transforms.Conversion.MapValueToKey("Label")).Append(mlContext.MulticlassClassification.Trainers.OneVersusAll(mlContext.BinaryClassification.Trainers.LbfgsLogisticRegression()));
+                    var scores3 = mlContext.MulticlassClassification.CrossValidate(trainingData2, pipeline3, numberOfFolds: 10);
+                    aucValues = 0;
+                    for (int k = 0; k < 10; k++)
+                    {
+                        for (int i = 0; i < 3; i++)
+                        {
+                            for (int j = 0; j < 3; j++)
+                            {
+                                matriz[i, j] = (int)scores3[k].Metrics.ConfusionMatrix.GetCountForClassPair(i, j);
+                            }
+                        }
+                        aucValues += ComputeMultiClassAUC(matriz);
+                    }
+                    break;
+                case 4:
+                    var pipeline4 = mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "typeEncoded", inputColumnName: "type").Append(mlContext.Transforms.Concatenate("Features", attributes)
+                     ).Append(mlContext.Transforms.Conversion.MapValueToKey("Label")).Append(mlContext.MulticlassClassification.Trainers.OneVersusAll(mlContext.BinaryClassification.Trainers.AveragedPerceptron()));
+                    var scores4 = mlContext.MulticlassClassification.CrossValidate(trainingData2, pipeline4, numberOfFolds: 10);
+                    aucValues = 0;
+                    for (int k = 0; k < 10; k++)
+                    {
+                        for (int i = 0; i < 3; i++)
+                        {
+                            for (int j = 0; j < 3; j++)
+                            {
+                                matriz[i, j] = (int)scores4[k].Metrics.ConfusionMatrix.GetCountForClassPair(i, j);
+                            }
+                        }
+                        aucValues += ComputeMultiClassAUC(matriz);
+                    }
+                    break;
+                case 5:
+                    var pipeline5 = mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "typeEncoded", inputColumnName: "type").Append(mlContext.Transforms.Concatenate("Features", attributes)
+                     ).Append(mlContext.Transforms.Conversion.MapValueToKey("Label")).Append(mlContext.MulticlassClassification.Trainers.OneVersusAll(mlContext.BinaryClassification.Trainers.LinearSvm()));
+                    var scores5 = mlContext.MulticlassClassification.CrossValidate(trainingData2, pipeline5, numberOfFolds: 10);
+                    aucValues = 0;
+                    for (int k = 0; k < 10; k++)
+                    {
+                        for (int i = 0; i < 3; i++)
+                        {
+                            for (int j = 0; j < 3; j++)
+                            {
+                                matriz[i, j] = (int)scores5[k].Metrics.ConfusionMatrix.GetCountForClassPair(i, j);
+                            }
+                        }
+                        aucValues += ComputeMultiClassAUC(matriz);
+                    }
+                    break;
+                case 6:
+                    var pipeline6 = mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "typeEncoded", inputColumnName: "type").Append(mlContext.Transforms.Concatenate("Features", attributes)
+                     ).Append(mlContext.Transforms.Conversion.MapValueToKey("Label")).Append(mlContext.MulticlassClassification.Trainers.LbfgsMaximumEntropy());
+                    var scores6 = mlContext.MulticlassClassification.CrossValidate(trainingData2, pipeline6, numberOfFolds: 10);
+                    aucValues = 0;
+                    for (int k = 0; k < 10; k++)
+                    {
+                        for (int i = 0; i < 3; i++)
+                        {
+                            for (int j = 0; j < 3; j++)
+                            {
+                                matriz[i, j] = (int)scores6[k].Metrics.ConfusionMatrix.GetCountForClassPair(i, j);
+                            }
+                        }
+                        aucValues += ComputeMultiClassAUC(matriz);
+                    }
+                    break;
+            }
+            return aucValues / 10; //return mean AUC 
+
+        }
+
+
         static void Main(string[] args)
         {
             MLContext mlContext = new MLContext();
@@ -348,158 +485,13 @@ namespace VIC
                 "typeEncoded"
                 };
 
-            // 3. Model selection and confusion matrix creation, the matrix is not filled at this time.
-            int selector = 2; 
-            int[,] matriz = new int[3, 3];
-
-            double aucValues = 0;
-
-            // 4. Pipeline creation, cross validation evaluation and AUC computation through the confusion matrix 
-
-            switch (selector)
+            int selector = 0;
+            for (int i = 0; i < 7; i++)
             {
-                case 0: 
-                    var pipeline0 = mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "typeEncoded", inputColumnName: "type").Append(mlContext.Transforms.Concatenate("Features", attributes)
-                     ).Append(mlContext.Transforms.Conversion.MapValueToKey("Label")).Append(mlContext.MulticlassClassification.Trainers.NaiveBayes()); //pipeline for specific model
-                    var scores0 = mlContext.MulticlassClassification.CrossValidate(trainingData2, pipeline0, numberOfFolds: 10); //cross validation evaluation.
-                    aucValues = 0;
-                    for (int k = 0; k < 10; k++) //confusion matrix generation
-                    {
-                        for (int i = 0; i < 3; i++)
-                        {
-                            for (int j = 0; j < 3; j++)
-                            {
-                                matriz[i, j] = (int)scores0[k].Metrics.ConfusionMatrix.GetCountForClassPair(i, j);
-                            }
-                        }
-                        aucValues += ComputeMultiClassAUC(matriz); //computes multi class auc and adds it to be calculated as an average. 
-                    }
-
-                    Console.WriteLine("El valor de AUC con cross-val de 10 folds usando el modelo "+selector+" es: "); 
-                    Console.WriteLine(aucValues / 10); //result.
-                    break;
-                case 1:
-                    var pipeline1 = mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "typeEncoded", inputColumnName: "type").Append(mlContext.Transforms.Concatenate("Features", attributes)
-                     ).Append(mlContext.Transforms.Conversion.MapValueToKey("Label")).Append(mlContext.MulticlassClassification.Trainers.OneVersusAll(mlContext.BinaryClassification.Trainers.FastTree()));
-                    var scores1 = mlContext.MulticlassClassification.CrossValidate(trainingData2, pipeline1, numberOfFolds: 10);
-                    aucValues = 0;
-                    for (int k = 0; k < 10; k++)
-                    {
-                        for (int i = 0; i < 3; i++)
-                        {
-                            for (int j = 0; j < 3; j++)
-                            {
-                                matriz[i, j] = (int)scores1[k].Metrics.ConfusionMatrix.GetCountForClassPair(i, j);
-                            }
-                        }
-                        aucValues += ComputeMultiClassAUC(matriz);
-                    }
-
-                    Console.WriteLine("El valor de AUC con cross-val de 10 folds usando el modelo " + selector + " es: ");
-                    Console.WriteLine(aucValues / 10);
-                    break;
-                case 2:
-                    var pipeline2 = mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "typeEncoded", inputColumnName: "type").Append(mlContext.Transforms.Concatenate("Features", attributes)
-                     ).Append(mlContext.Transforms.Conversion.MapValueToKey("Label")).Append(mlContext.MulticlassClassification.Trainers.OneVersusAll(mlContext.BinaryClassification.Trainers.FastForest()));
-                    var scores2 = mlContext.MulticlassClassification.CrossValidate(trainingData2, pipeline2, numberOfFolds: 10);
-                    aucValues = 0;
-                    for (int k = 0; k < 10; k++)
-                    {
-                        for (int i = 0; i < 3; i++)
-                        {
-                            for (int j = 0; j < 3; j++)
-                            {
-                                matriz[i, j] = (int)scores2[k].Metrics.ConfusionMatrix.GetCountForClassPair(i, j);
-                            }
-                        }
-                        aucValues += ComputeMultiClassAUC(matriz);
-                    }
-
-                    Console.WriteLine("El valor de AUC con cross-val de 10 folds usando el modelo " + selector + " es: ");
-                    Console.WriteLine(aucValues / 10);
-                    break;
-                case 3:
-                    var pipeline3 = mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "typeEncoded", inputColumnName: "type").Append(mlContext.Transforms.Concatenate("Features", attributes)
-                     ).Append(mlContext.Transforms.Conversion.MapValueToKey("Label")).Append(mlContext.MulticlassClassification.Trainers.OneVersusAll(mlContext.BinaryClassification.Trainers.LbfgsLogisticRegression()));
-                    var scores3 = mlContext.MulticlassClassification.CrossValidate(trainingData2, pipeline3, numberOfFolds: 10);
-                    aucValues = 0;
-                    for (int k = 0; k < 10; k++)
-                    {
-                        for (int i = 0; i < 3; i++)
-                        {
-                            for (int j = 0; j < 3; j++)
-                            {
-                                matriz[i, j] = (int)scores3[k].Metrics.ConfusionMatrix.GetCountForClassPair(i, j);
-                            }
-                        }
-                        aucValues += ComputeMultiClassAUC(matriz);
-                    }
-                    Console.WriteLine("El valor de AUC con cross-val de 10 folds usando el modelo " + selector + " es: ");
-                    Console.WriteLine(aucValues / 10);
-                    break;
-                case 4:
-                    var pipeline4 = mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "typeEncoded", inputColumnName: "type").Append(mlContext.Transforms.Concatenate("Features", attributes)
-                     ).Append(mlContext.Transforms.Conversion.MapValueToKey("Label")).Append(mlContext.MulticlassClassification.Trainers.OneVersusAll(mlContext.BinaryClassification.Trainers.AveragedPerceptron()));
-                    var scores4 = mlContext.MulticlassClassification.CrossValidate(trainingData2, pipeline4, numberOfFolds: 10);
-                    aucValues = 0;
-                    for (int k = 0; k < 10; k++)
-                    {
-                        for (int i = 0; i < 3; i++)
-                        {
-                            for (int j = 0; j < 3; j++)
-                            {
-                                matriz[i, j] = (int)scores4[k].Metrics.ConfusionMatrix.GetCountForClassPair(i, j);
-                            }
-                        }
-                        aucValues += ComputeMultiClassAUC(matriz);
-                    }
-                    Console.WriteLine("El valor de AUC con cross-val de 10 folds usando el modelo " + selector + " es: ");
-                    Console.WriteLine(aucValues / 10);
-                    break;
-                case 5:
-                    var pipeline5 = mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "typeEncoded", inputColumnName: "type").Append(mlContext.Transforms.Concatenate("Features", attributes)
-                     ).Append(mlContext.Transforms.Conversion.MapValueToKey("Label")).Append(mlContext.MulticlassClassification.Trainers.OneVersusAll(mlContext.BinaryClassification.Trainers.LinearSvm()));
-                    var scores5 = mlContext.MulticlassClassification.CrossValidate(trainingData2, pipeline5, numberOfFolds: 10);
-                    aucValues = 0;
-                    for (int k = 0; k < 10; k++)
-                    {
-                        for (int i = 0; i < 3; i++)
-                        {
-                            for (int j = 0; j < 3; j++)
-                            {
-                                matriz[i, j] = (int)scores5[k].Metrics.ConfusionMatrix.GetCountForClassPair(i, j);
-                            }
-                        }
-                        aucValues += ComputeMultiClassAUC(matriz);
-                    }
-                    Console.WriteLine("El valor de AUC con cross-val de 10 folds usando el modelo " + selector + " es: ");
-                    Console.WriteLine(aucValues / 10);
-                    break;
-                case 6:
-                    var pipeline6 = mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "typeEncoded", inputColumnName: "type").Append(mlContext.Transforms.Concatenate("Features", attributes)
-                     ).Append(mlContext.Transforms.Conversion.MapValueToKey("Label")).Append(mlContext.MulticlassClassification.Trainers.LbfgsMaximumEntropy());
-                    var scores6 = mlContext.MulticlassClassification.CrossValidate(trainingData2, pipeline6, numberOfFolds: 10);
-                    aucValues = 0;
-                    for (int k = 0; k < 10; k++)
-                    {
-                        for (int i = 0; i < 3; i++)
-                        {
-                            for (int j = 0; j < 3; j++)
-                            {
-                                matriz[i, j] = (int)scores6[k].Metrics.ConfusionMatrix.GetCountForClassPair(i, j);
-                            }
-                        }
-                        aucValues += ComputeMultiClassAUC(matriz);
-                    }
-                    Console.WriteLine("El valor de AUC con cross-val de 10 folds usando el modelo " + selector + " es: ");
-                    Console.WriteLine(aucValues / 10);
-                    break;
+                Console.WriteLine("El valor de AUC con cross-val de 10 folds usando el modelo " + i + " es: ");
+                Console.WriteLine(CalculateModelAUC(mlContext, i, trainingData2, attributes)); //result.
             }
-
         }
-
-
-
 
     }
 
