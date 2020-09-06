@@ -632,8 +632,6 @@ namespace VIC
                 //.LbfgsMaximumEntropy());
 
 
-            //var model2 = pipeline2.Fit(trainingData2);
-
             var scores2 = mlContext.MulticlassClassification.CrossValidate(trainingData2, pipeline2, numberOfFolds: 10);
             var predictions2 = scores2[0];
             var mean2 = scores2.Max(x => x.Metrics.MacroAccuracy);
