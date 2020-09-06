@@ -67,13 +67,13 @@ namespace VIC
             //var model2 = pipeline2.Fit(trainingData2);
 
             var scores2 = mlContext.MulticlassClassification.CrossValidate(trainingData2, pipeline2, numberOfFolds: 10);
-            var predictions2 = scores2.Count;
-            var mean2 = scores2.Average(x => x.Metrics.MacroAccuracy);
+            var predictions2 = scores2[0];
+            var mean2 = scores2.Max(x => x.Metrics.MacroAccuracy);
             Console.WriteLine("El valor de AUC en la cosa esta con cross-val es: ");
             Console.WriteLine(mean2);
-            Console.WriteLine(predictions2);
+            Console.WriteLine(predictions2.Metrics.ConfusionMatrix.GetFormattedConfusionTable());
 
-
+            Console.WriteLine(predictions2.Metrics.ConfusionMatrix.GetCountForClassPair(0,0));
 
 
             // 3. Train model
