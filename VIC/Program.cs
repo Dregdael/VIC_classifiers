@@ -32,7 +32,11 @@ namespace VIC
 
             // 1. Import or create training data
 
+<<<<<<< Updated upstream
            // IDataView trainingData = Util.Load_data();
+=======
+            // Binary data
+>>>>>>> Stashed changes
             string csv_path = @"C:\Users\crash\Desktop\MCC-i\2doSemestre\Tecnicas Computacionales de Aprendizaje Automatico\Tarea 2\Github\VIC_classifiers\VIC\data.csv";
             IDataView trainingData = mlContext.Data.LoadFromTextFile<ModelInput>(csv_path, separatorChar: ',', hasHeader: true);
     
@@ -305,7 +309,13 @@ namespace VIC
                 })
                 ).Append(mlContext.BinaryClassification.Trainers.FastForest(labelColumnName: "Label"));
 
+<<<<<<< Updated upstream
             var model = pipeline.Fit(trainingData);
+=======
+            //Multi-class data
+            string csv_path2 = @"C:\Users\crash\Desktop\MCC-i\2doSemestre\Tecnicas Computacionales de Aprendizaje Automatico\Tarea 2\Github\VIC_classifiers\VIC\data2.csv";
+            IDataView trainingData2 = mlContext.Data.LoadFromTextFile<ModelInput2>(csv_path2, separatorChar: ',', hasHeader: true);
+>>>>>>> Stashed changes
 
             var scores = mlContext.BinaryClassification.CrossValidate(trainingData, pipeline, numberOfFolds: 10);
             var mean = scores.Average(x => x.Metrics.AreaUnderRocCurve);
