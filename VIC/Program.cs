@@ -64,10 +64,10 @@ namespace VIC
             return ComputeTwoClassAUC(eval);
         }
 
-        public static double CalculateModelAUC(MLContext mlContext, int selector, IDataView trainingData2, string[] attributes)
+        public static double CalculateModelAUC(MLContext mlContext, int selector, IDataView trainingData2, string[] attributes,int classNumber)
         {
             // 3. Model selection and confusion matrix creation, the matrix is not filled at this time.
-            int[,] matriz = new int[3, 3];
+            int[,] matriz = new int[classNumber, classNumber];
 
             double aucValues = 0;
 
@@ -76,15 +76,15 @@ namespace VIC
             switch (selector)
             {
                 case 0:
-                    var pipeline0 = mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "typeEncoded", inputColumnName: "type").Append(mlContext.Transforms.Concatenate("Features", attributes)
-                     ).Append(mlContext.Transforms.Conversion.MapValueToKey("Label")).Append(mlContext.MulticlassClassification.Trainers.NaiveBayes()); //pipeline for specific model
+                    var pipeline0 = mlContext.Transforms.Categorical.OneHotEncoding(outputColumnName: "typeEncoded", inputColumnName: "type").Append(mlContext.Transforms.Concatenate("Features", attributes))
+                     .Append(mlContext.Transforms.Conversion.MapValueToKey("Label")).Append(mlContext.MulticlassClassification.Trainers.NaiveBayes()); //pipeline for specific model
                     var scores0 = mlContext.MulticlassClassification.CrossValidate(trainingData2, pipeline0, numberOfFolds: 10); //cross validation evaluation.
                     aucValues = 0;
                     for (int k = 0; k < 10; k++) //confusion matrix generation
                     {
-                        for (int i = 0; i < 3; i++)
+                        for (int i = 0; i < classNumber; i++)
                         {
-                            for (int j = 0; j < 3; j++)
+                            for (int j = 0; j < classNumber; j++)
                             {
                                 matriz[i, j] = (int)scores0[k].Metrics.ConfusionMatrix.GetCountForClassPair(i, j);
                             }
@@ -99,9 +99,9 @@ namespace VIC
                     aucValues = 0;
                     for (int k = 0; k < 10; k++)
                     {
-                        for (int i = 0; i < 3; i++)
+                        for (int i = 0; i < classNumber; i++)
                         {
-                            for (int j = 0; j < 3; j++)
+                            for (int j = 0; j < classNumber; j++)
                             {
                                 matriz[i, j] = (int)scores1[k].Metrics.ConfusionMatrix.GetCountForClassPair(i, j);
                             }
@@ -116,9 +116,9 @@ namespace VIC
                     aucValues = 0;
                     for (int k = 0; k < 10; k++)
                     {
-                        for (int i = 0; i < 3; i++)
+                        for (int i = 0; i < classNumber; i++)
                         {
-                            for (int j = 0; j < 3; j++)
+                            for (int j = 0; j < classNumber; j++)
                             {
                                 matriz[i, j] = (int)scores2[k].Metrics.ConfusionMatrix.GetCountForClassPair(i, j);
                             }
@@ -133,9 +133,9 @@ namespace VIC
                     aucValues = 0;
                     for (int k = 0; k < 10; k++)
                     {
-                        for (int i = 0; i < 3; i++)
+                        for (int i = 0; i < classNumber; i++)
                         {
-                            for (int j = 0; j < 3; j++)
+                            for (int j = 0; j < classNumber; j++)
                             {
                                 matriz[i, j] = (int)scores3[k].Metrics.ConfusionMatrix.GetCountForClassPair(i, j);
                             }
@@ -150,9 +150,9 @@ namespace VIC
                     aucValues = 0;
                     for (int k = 0; k < 10; k++)
                     {
-                        for (int i = 0; i < 3; i++)
+                        for (int i = 0; i < classNumber; i++)
                         {
-                            for (int j = 0; j < 3; j++)
+                            for (int j = 0; j < classNumber; j++)
                             {
                                 matriz[i, j] = (int)scores4[k].Metrics.ConfusionMatrix.GetCountForClassPair(i, j);
                             }
@@ -167,9 +167,9 @@ namespace VIC
                     aucValues = 0;
                     for (int k = 0; k < 10; k++)
                     {
-                        for (int i = 0; i < 3; i++)
+                        for (int i = 0; i < classNumber; i++)
                         {
-                            for (int j = 0; j < 3; j++)
+                            for (int j = 0; j < classNumber; j++)
                             {
                                 matriz[i, j] = (int)scores5[k].Metrics.ConfusionMatrix.GetCountForClassPair(i, j);
                             }
@@ -184,9 +184,9 @@ namespace VIC
                     aucValues = 0;
                     for (int k = 0; k < 10; k++)
                     {
-                        for (int i = 0; i < 3; i++)
+                        for (int i = 0; i < classNumber; i++)
                         {
-                            for (int j = 0; j < 3; j++)
+                            for (int j = 0; j < classNumber; j++)
                             {
                                 matriz[i, j] = (int)scores6[k].Metrics.ConfusionMatrix.GetCountForClassPair(i, j);
                             }
@@ -215,7 +215,35 @@ namespace VIC
             IDataView trainingData2 = mlContext.Data.LoadFromTextFile<ModelInput2>(csv_path2, separatorChar: ',', hasHeader: true);
 
 
+            Clustering clustering = new Clustering();
+            IDataView trainingData3 =  clustering.get2clustered();
+            
+
+
+            string[] attributes = {
+                "nn",
+                "nnr"   ,
+                "nn_nn"   ,
+                "nnr_nnr" ,
+                "dn"  ,
+                "df"  ,
+                "dnr" ,
+                "dfr" ,
+                "dn_dn"   ,
+                "dnr_dnr" ,
+                "alphan"  ,
+                "alphaf"  ,
+                "alphann" ,
+                "alphanf" ,
+                "betann"   ,
+                "betaf"   ,
+                "alphan_betan"    //,
+                //"typeEncoded"
+                };
+
             // 2. Feature selection
+
+            /*
 
             string[] attributes = {
                 "nn15",
@@ -485,12 +513,19 @@ namespace VIC
                 "typeEncoded"
                 };
 
-            int selector = 0;
+            */
+            /*
+            double aucSingleModel = CalculateModelAUC(mlContext, 1, trainingData3, attributes,2);
+            Console.WriteLine("Aquí está el AUC:");
+            Console.WriteLine(aucSingleModel);
+            */
+            
+            //int selector = 0;
             double[] aucArray = new double[7];
             for (int i = 0; i < 7; i++)
             {
                 Console.WriteLine("El valor de AUC con cross-val de 10 folds usando el modelo " + i + " es: ");
-                aucArray[i] = CalculateModelAUC(mlContext, i, trainingData2, attributes);
+                aucArray[i] = CalculateModelAUC(mlContext, i, trainingData3, attributes,2);
                 Console.WriteLine(aucArray[i]); //result.
             }
             Console.WriteLine("El VIC es: ");
