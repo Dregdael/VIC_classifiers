@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Data;
 using Microsoft.ML.Data;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace VIC
 {
@@ -216,8 +218,9 @@ namespace VIC
 
 
             Clustering clustering = new Clustering();
-            IDataView trainingData3 =  clustering.get2clustered();
-            
+
+            IDataView trainingData3 = clustering.get2clustered();
+
 
 
             string[] attributes = {
@@ -519,17 +522,36 @@ namespace VIC
             Console.WriteLine("Aquí está el AUC:");
             Console.WriteLine(aucSingleModel);
             */
-            
+
             //int selector = 0;
             double[] aucArray = new double[7];
+            int[] indexArrray = { 0, 1, 2, 3, 4, 5, 6};
+            Parallel.ForEach(indexArrray, new ParallelOptions { MaxDegreeOfParallelism = 7 }, (x) =>
+            {
+                //Console.WriteLine("El valor de AUC con cross-val de 10 folds usando el modelo " + x + " es: ");
+                aucArray[x] = CalculateModelAUC(mlContext, x, trainingData3, attributes, 2);
+                //Console.WriteLine(CalculateModelAUC(mlContext, x, trainingData3, attributes, 2)); //result.
+                //close lambda expression and method invocation
+            });
+            
+            for (int i = 0; i < 7; i++)
+            {
+               // Console.WriteLine("El valor de AUC con cross-val de 10 folds usando el modelo " + i + " es: ");
+                Console.WriteLine(aucArray[i]); //result.
+            }
+            Console.WriteLine("El VIC es: ");
+            Console.WriteLine(aucArray.Max());
+
+            /*
+
             for (int i = 0; i < 7; i++)
             {
                 Console.WriteLine("El valor de AUC con cross-val de 10 folds usando el modelo " + i + " es: ");
                 aucArray[i] = CalculateModelAUC(mlContext, i, trainingData3, attributes,2);
                 Console.WriteLine(aucArray[i]); //result.
             }
-            Console.WriteLine("El VIC es: ");
-            Console.WriteLine(aucArray.Max());
+
+            ¨*/
         }
 
     }
